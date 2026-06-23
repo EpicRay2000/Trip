@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Summer Trip</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #080d13;
+  --surface:   #0e1520;
+  --surface2:  #141e2b;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --text:      #e2e8f0;
+  --text-muted:#6b7fa0;
+  --text-dim:  #3a4a60;
+  --accent:    #38bdf8;
+  --accent2:   #7dd3fc;
+  --green:     #4ade80;
+  --red:       #f87171;
+  --amber:     #fbbf24;
+  --purple:    #a78bfa;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HERO HEADER ── */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 48px 24px 40px;
+  text-align: center;
+  background: linear-gradient(180deg, #0a1628 0%, #080d13 100%);
+  border-bottom: 1px solid var(--border);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(56,189,248,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 80% 30%, rgba(167,139,250,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 15%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 45%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 8%  80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 85%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 92% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 62% 75%, rgba(255,255,255,0.2) 0%, transparent 100%);
+}
+
+.hero-eyebrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(56,189,248,0.08);
+  border: 1px solid rgba(56,189,248,0.2);
+  border-radius: 100px;
+  padding: 4px 14px;
+  margin-bottom: 16px;
+}
+
+.hero h1 {
+  position: relative;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #ffffff 0%, var(--accent2) 50%, var(--purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+}
+
+.hero-sub {
+  position: relative;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.hero-route {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+.hero-route .city {
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.hero-route .city.active { color: var(--accent); }
+.hero-route .arr { color: var(--text-dim); font-size: 0.65rem; }
+
+/* ── TRIP PROGRESS BAR ── */
+.progress-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.progress-bar-track {
+  position: relative;
+  height: 3px;
+  background: var(--surface2);
+  border-radius: 100px;
+  margin: 24px 0 6px;
+  overflow: visible;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--accent), var(--purple));
+  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: -4px; top: 50%;
+  transform: translateY(-50%);
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 8px rgba(56,189,248,0.8);
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+}
+
+/* ── CONTAINER ── */
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+}
+
+/* ── GPS PILL ── */
+.gps-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 5px 12px;
+  margin-bottom: 20px;
+}
+
+.gps-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── STATUS BANNER ── */
+.status-banner {
+  border-radius: 16px;
+  padding: 20px 22px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+}
+
+.status-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.status-banner.loading { border-color: var(--border); }
+.status-banner.before::before  { background: linear-gradient(135deg, #38bdf8, transparent); border-color: rgba(56,189,248,0.15); }
+.status-banner.before  { border-color: rgba(56,189,248,0.15); }
+.status-banner.on-trip::before { background: linear-gradient(135deg, #4ade80, transparent); }
+.status-banner.on-trip { border-color: rgba(74,222,128,0.2); }
+.status-banner.after::before   { background: linear-gradient(135deg, #fbbf24, transparent); }
+.status-banner.after   { border-color: rgba(251,191,36,0.2); }
+
+.status-icon { font-size: 2rem; flex-shrink: 0; margin-top: 2px; }
+
+.status-text h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.status-text p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.status-text p strong { color: var(--accent2); font-weight: 600; }
+
+/* ── COUNTDOWN GRID ── */
+.countdown-grid {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.countdown-cell {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  text-align: center;
+  min-width: 56px;
+}
+
+.countdown-num {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.countdown-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-top: 3px;
+}
+
+/* ── DAY CARD ── */
+.day-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 28px;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.4);
+}
+
+.day-card-header {
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.day-card-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(56,189,248,0.06) 0%, rgba(167,139,250,0.04) 100%);
+  pointer-events: none;
+}
+
+.day-number {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.day-number::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(56,189,248,0.3), transparent);
+}
+
+.day-card-header h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.day-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 3px 10px;
+}
+
+/* ── ACTIVITIES ── */
+.activities {
+  list-style: none;
+  padding: 16px 24px;
+}
+
+.activities li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.activities li:last-child { border-bottom: none; }
+
+.act-icon {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.act-icon.default { background: rgba(56,189,248,0.1);  color: var(--accent); }
+.act-icon.green   { background: rgba(74,222,128,0.1);  color: var(--green); }
+.act-icon.red     { background: rgba(248,113,113,0.1); color: var(--red); }
+.act-icon.amber   { background: rgba(251,191,36,0.1);  color: var(--amber); }
+
+/* ── SECTION HEADER ── */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  margin-top: 4px;
+}
+
+.section-header h3 {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.section-header::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── SPOTS GRID ── */
+.spots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.spot-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  cursor: default;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.spot-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.spot-emoji {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+  display: block;
+  line-height: 1;
+}
+
+.spot-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 5px;
+  line-height: 1.3;
+}
+
+.spot-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── FULL ITINERARY ── */
+.full-itinerary-section { margin-top: 8px; }
+
+.itinerary-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  font-family: inherit;
+  text-align: left;
+}
+
+.itinerary-toggle:hover {
+  border-color: var(--border2);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.toggle-arrow {
+  margin-left: auto;
+  font-size: 0.65rem;
+  transition: transform 0.25s;
+  color: var(--text-dim);
+}
+
+.toggle-arrow.open { transform: rotate(180deg); }
+
+.itinerary-body {
+  display: none;
+  margin-top: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.itinerary-body.open { display: block; }
+
+.itin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.itin-table th {
+  text-align: left;
+  padding: 10px 16px;
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--border);
+}
+
+.itin-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.itin-table tr:last-child td { border-bottom: none; }
+.itin-table tr:hover td { background: var(--surface2); }
+.itin-table tr.today-row td { background: rgba(74,222,128,0.04); color: var(--text); }
+.itin-table tr.today-row td:first-child { border-left: 2px solid var(--green); }
+.itin-table tr.past-row td { opacity: 0.45; }
+
+.today-chip {
+  display: inline-block;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 100px;
+  background: rgba(74,222,128,0.15);
+  color: var(--green);
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.loc-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  padding: 1px 7px;
+  border-radius: 100px;
+  background: rgba(56,189,248,0.08);
+  color: var(--accent);
+  border: 1px solid rgba(56,189,248,0.15);
+}
+
+/* ── LOADING SKELETON ── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 6px;
+}
+
+/* ── CITY MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.modal-overlay.hidden { display: none; }
+.modal-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 82vh;
+  overflow-y: auto;
+  padding: 24px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 12px;
+}
+.modal-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.modal-close {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  font-family: inherit;
+  flex-shrink: 0;
+  transition: border-color 0.15s, color 0.15s;
+}
+.modal-close:hover { border-color: var(--border2); color: var(--text); }
+.hero-route .city.clickable { cursor: pointer; }
+.hero-route .city.clickable:hover { color: var(--accent2); text-decoration: underline; text-underline-offset: 3px; }
+.loc-badge.clickable { cursor: pointer; }
+.loc-badge.clickable:hover { background: rgba(56,189,248,0.18); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 520px) {
+  .hero { padding: 36px 16px 28px; }
+  .spots-grid { grid-template-columns: 1fr 1fr; }
+  .countdown-grid { gap: 8px; }
+  .day-card-header h2 { font-size: 1.2rem; }
+  .hero-route { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-stars"></div>
+  <div class="hero-eyebrow">✈️ Summer 2026</div>
+  <h1>New England &amp; Maritime Canada</h1>
+  <p class="hero-sub">Jun 25 – Jul 12, 2026 · 18 days</p>
+  <div class="hero-route">
+    <span class="city">Orlando</span>
+    <span class="arr">→</span>
+    <span class="city" id="r-nyc">NYC</span>
+    <span class="arr">→</span>
+    <span class="city" id="r-barharbor">Bar Harbor</span>
+    <span class="arr">→</span>
+    <span class="city" id="r-lunenburg">Lunenburg</span>
+    <span class="arr">→</span>
+    <span class="city" id="r-cabottrail">Cabot Trail</span>
+    <span class="arr">→</span>
+    <span class="city" id="r-halifax">Halifax</span>
+    <span class="arr">→</span>
+    <span class="city" id="r-portland">Portland</span>
+    <span class="arr">→</span>
+    <span class="city">NYC</span>
+    <span class="arr">→</span>
+    <span class="city">Orlando</span>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+  <div class="progress-labels">
+    <span>Jun 25</span>
+    <span id="progress-label">Loading…</span>
+    <span>Jul 12</span>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <div id="gps-pill" class="gps-pill" style="display:none">
+    <span class="gps-dot"></span>
+    <span id="gps-text">Locating…</span>
+  </div>
+
+  <div id="status-banner" class="status-banner loading">
+    <div class="status-icon">⏳</div>
+    <div class="status-text">
+      <h2>Loading your trip…</h2>
+      <p>Checking date and location.</p>
+    </div>
+  </div>
+
+  <!-- TODAY SECTION (hidden until on trip) -->
+  <div id="day-section" style="display:none">
+    <div class="day-card">
+      <div class="day-card-header">
+        <div class="day-number" id="day-number">Day 1 of 18</div>
+        <h2 id="day-title">—</h2>
+        <div class="day-meta">
+          <span class="meta-pill" id="day-date-pill">📅 —</span>
+          <span class="meta-pill" id="day-hotel-pill">🏨 —</span>
+        </div>
+      </div>
+      <ul class="activities" id="day-activities"></ul>
+    </div>
+
+    <div class="section-header">
+      <h3 id="spots-heading">Things to do nearby</h3>
+    </div>
+    <div class="spots-grid" id="spots-grid"></div>
+  </div>
+
+  <!-- FULL ITINERARY ACCORDION -->
+  <div class="full-itinerary-section">
+    <button class="itinerary-toggle" id="itin-toggle" onclick="toggleItinerary()">
+      <span>📋</span>
+      <span>Full Itinerary</span>
+      <span class="toggle-arrow" id="toggle-arrow">▼</span>
+    </button>
+    <div class="itinerary-body" id="itin-body">
+      <table class="itin-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Destination</th>
+            <th>Plan</th>
+            <th>Hotel</th>
+          </tr>
+        </thead>
+        <tbody id="itin-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- CITY MODAL -->
+<div class="modal-overlay hidden" id="city-modal">
+  <div class="modal-card" id="modal-card">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">—</span>
+      <button class="modal-close" onclick="closeCityModal()">✕ Close</button>
+    </div>
+    <div class="spots-grid" id="modal-spots-grid"></div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────────────────────
+const ITINERARY = [
+  { date:"2026-06-25", loc:"NYC",        city:"New York City, NY",      title:"Arrive in New York City",            hotel:"Moxy NYC Downtown",
+    acts:[ {t:"Flight ORL → NYC (JetBlue)", c:"green"}, {t:"Check in: Moxy NYC Downtown (3 nights)", c:""} ] },
+  { date:"2026-06-26", loc:"NYC",        city:"New York City, NY",      title:"New York City",                      hotel:"Moxy NYC Downtown",
+    acts:[ {t:"Explore NYC — sightseeing, food, culture", c:""} ] },
+  { date:"2026-06-27", loc:"NYC",        city:"New York City, NY",      title:"New York City",                      hotel:"Moxy NYC Downtown",
+    acts:[ {t:"Full day in NYC", c:""} ] },
+  { date:"2026-06-28", loc:"BarHarbor",  city:"Bar Harbor, ME",         title:"NYC → Portland → Bar Harbor",        hotel:"Days Inn by Wyndham Bar Harbor",
+    acts:[ {t:"Flight NYC → Portland (1h 30m)", c:"green"}, {t:"Pick up car rental", c:"amber"}, {t:"Drive to Bar Harbor (~2h 50m)", c:""}, {t:"Check in: Days Inn by Wyndham Bar Harbor (2 nights)", c:""} ] },
+  { date:"2026-06-29", loc:"BarHarbor",  city:"Bar Harbor, ME",         title:"Bar Harbor & Acadia National Park",  hotel:"Days Inn by Wyndham Bar Harbor",
+    acts:[ {t:"Explore Acadia National Park", c:"green"}, {t:"Bar Harbor village & waterfront", c:""} ] },
+  { date:"2026-06-30", loc:"Lunenburg",  city:"Lunenburg, Nova Scotia", title:"Bar Harbor → Ferry → Lunenburg",    hotel:"Travelodge by Wyndham Bridgewater",
+    acts:[ {t:"Ferry: Bar Harbor → Yarmouth, NS (~3h 50m)", c:"green"}, {t:"Drive Yarmouth → Lunenburg (~2h 30m)", c:""}, {t:"Check in: Travelodge by Wyndham Bridgewater (2 nights)", c:""} ] },
+  { date:"2026-07-01", loc:"Lunenburg",  city:"Lunenburg, Nova Scotia", title:"Lunenburg",                          hotel:"Travelodge by Wyndham Bridgewater",
+    acts:[ {t:"UNESCO Old Town Lunenburg", c:""}, {t:"Fisheries Museum of the Atlantic", c:""} ] },
+  { date:"2026-07-02", loc:"Iona",       city:"Iona, Cape Breton",      title:"Lunenburg → Iona",                   hotel:"The Iona Heights Inn",
+    acts:[ {t:"Drive Lunenburg → Iona (~4h)", c:""}, {t:"Check in: The Iona Heights Inn (1 night)", c:""}, {t:"Bras d'Or Lake views", c:""} ] },
+  { date:"2026-07-03", loc:"Cheticamp",  city:"Chéticamp, Cape Breton", title:"Cabot Trail Loop 1 → Chéticamp",    hotel:"Laurie's Inn",
+    acts:[ {t:"Cabot Trail north section — Pleasant Bay, Cape North, Neil's Harbour", c:"green"}, {t:"Check in: Laurie's Inn Chéticamp (1 night)", c:""} ] },
+  { date:"2026-07-04", loc:"Antigonish", city:"Antigonish, NS",         title:"Cabot Trail Loop 2 → Antigonish",   hotel:"Maritime Inn Antigonish",
+    acts:[ {t:"Cabot Trail south section from Chéticamp (~3h 30m scenic)", c:"green"}, {t:"Check in: Maritime Inn Antigonish (1 night)", c:""} ] },
+  { date:"2026-07-05", loc:"Halifax",    city:"Halifax, Nova Scotia",   title:"Antigonish → Halifax",               hotel:"Four Points by Sheraton Halifax",
+    acts:[ {t:"Drive Antigonish → Halifax (~1h 45m)", c:""}, {t:"Check in: Four Points by Sheraton Halifax (2 nights)", c:""}, {t:"Halifax waterfront stroll", c:""} ] },
+  { date:"2026-07-06", loc:"Halifax",    city:"Halifax, Nova Scotia",   title:"Halifax",                            hotel:"Four Points by Sheraton Halifax",
+    acts:[ {t:"Citadel Hill & Peggy's Cove day trip (optional)", c:""}, {t:"Halifax waterfront & craft beer scene", c:""} ] },
+  { date:"2026-07-07", loc:"Yarmouth",   city:"Yarmouth, Nova Scotia",  title:"Halifax → Chester → Yarmouth",      hotel:"Comfort Inn Yarmouth",
+    acts:[ {t:"Scenic South Shore drive: Halifax → Chester → Yarmouth", c:""}, {t:"Check in: Comfort Inn Yarmouth (1 night)", c:""} ] },
+  { date:"2026-07-08", loc:"Portland",   city:"Portland, ME",           title:"Yarmouth → Ferry → Portland",        hotel:"Home2 Suites By Hilton Portland Airport",
+    acts:[ {t:"Ferry: Yarmouth → Bar Harbor", c:"green"}, {t:"Drive Bar Harbor → Portland, ME", c:""}, {t:"Check in: Home2 Suites by Hilton Portland Airport (2 nights)", c:""} ] },
+  { date:"2026-07-09", loc:"Portland",   city:"Portland, ME",           title:"Portland, Maine",                    hotel:"Home2 Suites By Hilton Portland Airport",
+    acts:[ {t:"Old Port District & cobblestone streets", c:""}, {t:"Portland Head Light", c:""}, {t:"Maine seafood & local restaurants", c:""} ] },
+  { date:"2026-07-10", loc:"NYC",        city:"New York City, NY",      title:"Portland → NYC",                     hotel:"The Shelburne Sonesta New York",
+    acts:[ {t:"Return rental car", c:"red"}, {t:"Flight Portland → NYC (American Airlines)", c:"green"}, {t:"Check in: The Shelburne Sonesta New York (2 nights)", c:""} ] },
+  { date:"2026-07-11", loc:"NYC",        city:"New York City, NY",      title:"New York City",                      hotel:"The Shelburne Sonesta New York",
+    acts:[ {t:"Last full day in NYC — shopping & sightseeing", c:""} ] },
+  { date:"2026-07-12", loc:"Home",       city:"Orlando, FL",            title:"Fly NYC → Orlando 🎉",               hotel:"JetBlue — heading home!",
+    acts:[ {t:"Check out & head to airport", c:"red"}, {t:"Flight NYC → Orlando (JetBlue)", c:"green"} ] },
+];
+
+const SPOTS = {
+  NYC: [
+    { e:"🗽", n:"Statue of Liberty",  d:"Iconic symbol — ferry from Battery Park" },
+    { e:"🌳", n:"Central Park",       d:"840 acres of greenspace in Manhattan" },
+    { e:"🎭", n:"Broadway",           d:"World-class theatre — book in advance" },
+    { e:"🏙️", n:"Top of the Rock",   d:"360° views from Rockefeller Center" },
+    { e:"🖼️", n:"The Met",           d:"One of the world's great art museums" },
+    { e:"🌉", n:"Brooklyn Bridge",    d:"Walk across for stunning skyline views" },
+    { e:"🍕", n:"NYC Pizza",          d:"Classic NY-style slices at a corner spot" },
+    { e:"🛍️", n:"Chelsea Market",    d:"Food hall in a historic biscuit factory" },
+    { e:"🍛", n:"Curry Hill",          d:"Lex Ave 26th–30th St — 10-min walk from Shelburne Sonesta; Haandi, Pongal & more" },
+    { e:"🫙", n:"Kalustyan's",        d:"123 Lex Ave (28th St) — legendary Middle Eastern & desi market, same walk from Shelburne" },
+    { e:"🥙", n:"The Halal Guys",     d:"53rd & 6th Ave — iconic NYC halal cart, ~15-min walk north from Shelburne Sonesta" },
+    { e:"🧆", n:"Mamoun's Falafel",   d:"119 Nassau St — 5-min walk from Moxy Downtown; falafel & shawarma since 1969" },
+    { e:"🥙", n:"Halal Carts (FiDi)", d:"Broadway & Fulton St area — several halal carts steps from Moxy Downtown" },
+  ],
+  BarHarbor: [
+    { e:"🏔️", n:"Cadillac Mountain",  d:"First sunrise spot in the US — drive to summit" },
+    { e:"🦞", n:"Lobster Rolls",       d:"Fresh Maine lobster at the town waterfront" },
+    { e:"🛶", n:"Jordan Pond",         d:"Crystal-clear lake, stunning mountain backdrop" },
+    { e:"🚴", n:"Carriage Roads",      d:"45+ miles of car-free roads through Acadia" },
+    { e:"⛵", n:"Whale Watching",      d:"Scenic tours from Bar Harbor town pier" },
+    { e:"🌊", n:"Thunder Hole",        d:"Natural inlet with dramatic wave crashes" },
+    { e:"🏖️", n:"Sand Beach",         d:"Acadia's only sandy beach — bracing Atlantic" },
+    { e:"🏝️", n:"Bar Island",         d:"Walk the gravel bar at low tide" },
+  ],
+  Lunenburg: [
+    { e:"⚓", n:"Fisheries Museum",    d:"Maritime heritage & schooner tours" },
+    { e:"🏘️", n:"Old Town Lunenburg", d:"UNESCO World Heritage — colourful historic streets" },
+    { e:"🎨", n:"Art Galleries",       d:"Atlantic Canadian artists showcased throughout town" },
+    { e:"⛵", n:"Bluenose II",         d:"Iconic Nova Scotia schooner, often docked here" },
+    { e:"🦞", n:"Knot Pub",           d:"Local landmark for seafood & Nova Scotia beer" },
+    { e:"🏖️", n:"Hirtle's Beach",     d:"Stunning wild beach ~25 min away" },
+  ],
+  Iona: [
+    { e:"🌊", n:"Bras d'Or Lake",     d:"UNESCO Biosphere — vast inland sea with eagle sightings" },
+    { e:"🏔️", n:"Cape Breton Highlands", d:"Gateway to dramatic highland scenery" },
+    { e:"🎻", n:"Celtic Music",        d:"Find a ceilidh — Cape Breton fiddle is world-famous" },
+    { e:"🦅", n:"Bald Eagles",         d:"One of the best eagle-watching spots in Canada" },
+  ],
+  Cheticamp: [
+    { e:"🌄", n:"Cabot Trail Views",   d:"Most dramatic coastal scenery in North America" },
+    { e:"🐋", n:"Whale Watching",      d:"Pilot & minke whales frequent the Gulf of St Lawrence" },
+    { e:"🎨", n:"Hooked Rug Art",      d:"Chéticamp is world-famous for Acadian hooked rugs" },
+    { e:"🏕️", n:"Skyline Trail",       d:"Cliffside hike with ocean panoramas in Cape Breton NP" },
+    { e:"🏘️", n:"Pleasant Bay",        d:"Wildest stretch of Cabot Trail — whale watching hub" },
+  ],
+  Antigonish: [
+    { e:"🎪", n:"Highland Games",      d:"Oldest Scottish Highland Games in North America (July!)" },
+    { e:"🏖️", n:"Pomquet Beach",       d:"White sand beach ~20 min from town" },
+    { e:"⛪", n:"St. Ninian's Cathedral", d:"Beautiful cathedral in the heart of town" },
+    { e:"🏫", n:"St. Francis Xavier",  d:"Historic campus — lovely for a walk" },
+  ],
+  Halifax: [
+    { e:"🏰", n:"Citadel Hill",        d:"National Historic Site — noon gun & harbour views" },
+    { e:"🚢", n:"Halifax Waterfront",  d:"Boardwalk, museums, and great seafood" },
+    { e:"🏮", n:"Peggy's Cove",        d:"Iconic lighthouse — 45 min scenic drive" },
+    { e:"⚓", n:"Maritime Museum",     d:"Titanic artefacts & Atlantic naval history" },
+    { e:"🍺", n:"Craft Beer",          d:"Halifax has one of Canada's best brewery scenes" },
+    { e:"🌳", n:"Public Gardens",      d:"Victorian formal gardens open since 1867" },
+  ],
+  Yarmouth: [
+    { e:"🏮", n:"Cape Forchu Light",   d:"Dramatic headland lighthouse — perfect for sunsets" },
+    { e:"🎨", n:"Yarmouth Art Gallery", d:"Regional maritime arts of Nova Scotia" },
+    { e:"🏛️", n:"Yarmouth Museum",    d:"Largest collection of ship portraits in Canada" },
+    { e:"🌊", n:"Wedgeport",           d:"Scenic fishing village nearby" },
+  ],
+  Portland: [
+    { e:"🦞", n:"Old Port District",   d:"Cobblestone streets, great seafood restaurants" },
+    { e:"🏮", n:"Portland Head Light", d:"Maine's oldest lighthouse — stunning ocean views" },
+    { e:"🍦", n:"Gelato Fiasco",       d:"Award-winning gelato — a Portland institution" },
+    { e:"🎨", n:"Portland Museum of Art", d:"Winslow Homer & Andrew Wyeth collections" },
+    { e:"🍺", n:"Allagash Brewery",    d:"Tour one of Maine's most beloved craft breweries" },
+    { e:"🛥️", n:"Casco Bay Islands",  d:"Ferry trips to the Calendar Islands" },
+  ],
+  Home: [
+    { e:"🏠", n:"Welcome Home!",       d:"Hope it was an incredible trip." },
+  ],
+};
+
+const LOC_BOUNDS = {
+  NYC:        [40.47, 40.92, -74.26, -73.70],
+  BarHarbor:  [44.30, 44.55, -68.50, -68.10],
+  Lunenburg:  [44.30, 44.55, -64.50, -64.10],
+  Iona:       [45.95, 46.20, -60.90, -60.50],
+  Cheticamp:  [46.55, 46.80, -61.10, -60.70],
+  Antigonish: [45.55, 45.80, -62.00, -61.50],
+  Halifax:    [44.55, 44.85, -63.75, -63.45],
+  Yarmouth:   [43.75, 44.05, -66.25, -65.85],
+  Portland:   [43.55, 43.80, -70.40, -70.10],
+};
+
+const TRIP_START = "2026-06-25";
+const TRIP_END   = "2026-07-12";
+const TOTAL_DAYS = 18;
+
+const LOC_ROUTE = {
+  NYC: "r-nyc", BarHarbor: "r-barharbor", Lunenburg: "r-lunenburg",
+  Cheticamp: "r-cabottrail", Antigonish: "r-cabottrail", Iona: "r-cabottrail",
+  Halifax: "r-halifax", Yarmouth: "r-halifax", Portland: "r-portland",
+};
+
+// ─────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function fmtDate(s) {
+  const [y,m,d] = s.split('-').map(Number);
+  return new Date(y,m-1,d).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+}
+
+function fmtShortDate(s) {
+  const [y,m,d] = s.split('-').map(Number);
+  return new Date(y,m-1,d).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+
+function daysBetween(a, b) {
+  return Math.round((new Date(b) - new Date(a)) / 86400000);
+}
+
+function detectLoc(lat, lon) {
+  for (const [loc,[la,lb,loa,lob]] of Object.entries(LOC_BOUNDS)) {
+    if (lat>=la && lat<=lb && lon>=loa && lon<=lob) return loc;
+  }
+  return null;
+}
+
+function actIcon(c) {
+  const icons = { green:'✈️', red:'🔑', amber:'🚗', '':'📍' };
+  return icons[c] ?? '📍';
+}
+
+// ─────────────────────────────────────────────────────────────
+// BUILD TABLE
+// ─────────────────────────────────────────────────────────────
+function buildTable(today) {
+  const tbody = document.getElementById('itin-tbody');
+  ITINERARY.forEach((day, i) => {
+    const isPast   = day.date < today;
+    const isToday  = day.date === today;
+    const tr = document.createElement('tr');
+    if (isToday)  tr.className = 'today-row';
+    else if (isPast) tr.className = 'past-row';
+
+    tr.innerHTML = `
+      <td style="white-space:nowrap;color:var(--text-muted)">${fmtShortDate(day.date)}${isToday ? '<span class="today-chip">Today</span>' : ''}</td>
+      <td><span class="loc-badge clickable" onclick="openLocModal('${day.loc}')">${day.city.split(',')[0]}</span></td>
+      <td style="color:var(--text)">${day.title}</td>
+      <td style="font-size:0.72rem">${day.hotel}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+// PROGRESS BAR
+// ─────────────────────────────────────────────────────────────
+function updateProgress(today) {
+  const fill  = document.getElementById('progress-fill');
+  const label = document.getElementById('progress-label');
+
+  if (today < TRIP_START) {
+    fill.style.width = '0%';
+    const d = daysBetween(today, TRIP_START);
+    label.textContent = `Starts in ${d} day${d!==1?'s':''}`;
+    return;
+  }
+  if (today > TRIP_END) {
+    fill.style.width = '100%';
+    label.textContent = 'Trip complete ✓';
+    return;
+  }
+  const elapsed = daysBetween(TRIP_START, today);
+  const pct = Math.min(100, Math.round((elapsed / (TOTAL_DAYS - 1)) * 100));
+  fill.style.width = pct + '%';
+  label.textContent = `Day ${elapsed + 1} of ${TOTAL_DAYS}`;
+}
+
+// ─────────────────────────────────────────────────────────────
+// HIGHLIGHT ROUTE CITY
+// ─────────────────────────────────────────────────────────────
+function highlightRoute(loc) {
+  const id = LOC_ROUTE[loc];
+  if (id) document.getElementById(id)?.classList.add('active');
+}
+
+// ─────────────────────────────────────────────────────────────
+// SHOW STATUS BANNER
+// ─────────────────────────────────────────────────────────────
+function showStatus(type, icon, title, bodyHTML) {
+  const el = document.getElementById('status-banner');
+  el.className = 'status-banner ' + type;
+  el.innerHTML = `
+    <div class="status-icon">${icon}</div>
+    <div class="status-text"><h2>${title}</h2><p>${bodyHTML}</p></div>
+  `;
+}
+
+// ─────────────────────────────────────────────────────────────
+// SHOW DAY
+// ─────────────────────────────────────────────────────────────
+function showDay(day, dayIndex) {
+  document.getElementById('day-section').style.display = 'block';
+  document.getElementById('day-number').textContent = `Day ${dayIndex + 1} of ${TOTAL_DAYS}`;
+  document.getElementById('day-title').textContent = day.title;
+  document.getElementById('day-date-pill').textContent = '📅 ' + fmtDate(day.date);
+  document.getElementById('day-hotel-pill').textContent = '🏨 ' + day.hotel;
+
+  const ul = document.getElementById('day-activities');
+  ul.innerHTML = '';
+  day.acts.forEach(a => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <span class="act-icon ${a.c || 'default'}">${actIcon(a.c)}</span>
+      <span>${a.t}</span>
+    `;
+    ul.appendChild(li);
+  });
+
+  const spots = SPOTS[day.loc] || [];
+  document.getElementById('spots-heading').textContent = `Things to do in ${day.city.split(',')[0]}`;
+  const grid = document.getElementById('spots-grid');
+  grid.innerHTML = '';
+  spots.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'spot-card';
+    div.innerHTML = `<span class="spot-emoji">${s.e}</span><div class="spot-name">${s.n}</div><div class="spot-desc">${s.d}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+// SHOW COUNTDOWN
+// ─────────────────────────────────────────────────────────────
+function showCountdown(daysUntil) {
+  const weeks = Math.floor(daysUntil / 7);
+  const days  = daysUntil % 7;
+  const el = document.getElementById('status-banner');
+  el.className = 'status-banner before';
+  el.innerHTML = `
+    <div class="status-icon">🗓️</div>
+    <div class="status-text">
+      <h2>Trip starts in ${daysUntil} day${daysUntil!==1?'s':''}!</h2>
+      <p>Your adventure kicks off on <strong>${fmtDate(TRIP_START)}</strong>. The full itinerary is below.</p>
+      <div class="countdown-grid">
+        ${weeks > 0 ? `<div class="countdown-cell"><div class="countdown-num">${weeks}</div><div class="countdown-label">Weeks</div></div>` : ''}
+        <div class="countdown-cell"><div class="countdown-num">${days}</div><div class="countdown-label">Days</div></div>
+      </div>
+    </div>
+  `;
+}
+
+// ─────────────────────────────────────────────────────────────
+// CITY MODAL
+// ─────────────────────────────────────────────────────────────
+const LOC_LABELS = {
+  NYC:        '🗽 New York City',
+  BarHarbor:  '🏔️ Bar Harbor & Acadia',
+  Lunenburg:  '⚓ Lunenburg',
+  Iona:       '🌊 Iona, Cape Breton',
+  Cheticamp:  '🌄 Chéticamp',
+  Antigonish: '🎪 Antigonish',
+  Halifax:    '🚢 Halifax',
+  Yarmouth:   '🏮 Yarmouth',
+  Portland:   '🦞 Portland, Maine',
+};
+
+const ROUTE_MODAL = {
+  'r-nyc':        { label: '🗽 New York City',              locs: ['NYC'] },
+  'r-barharbor':  { label: '🏔️ Bar Harbor & Acadia',       locs: ['BarHarbor'] },
+  'r-lunenburg':  { label: '⚓ Lunenburg',                  locs: ['Lunenburg'] },
+  'r-cabottrail': { label: '🌄 Cape Breton / Cabot Trail',  locs: ['Iona','Cheticamp','Antigonish'] },
+  'r-halifax':    { label: '🚢 Halifax & South Shore',      locs: ['Halifax','Yarmouth'] },
+  'r-portland':   { label: '🦞 Portland, Maine',            locs: ['Portland'] },
+};
+
+function openModal(title, spots) {
+  document.getElementById('modal-title').textContent = title;
+  const grid = document.getElementById('modal-spots-grid');
+  grid.innerHTML = '';
+  spots.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'spot-card';
+    div.innerHTML = `<span class="spot-emoji">${s.e}</span><div class="spot-name">${s.n}</div><div class="spot-desc">${s.d}</div>`;
+    grid.appendChild(div);
+  });
+  document.getElementById('city-modal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function openRouteModal(routeId) {
+  const cfg = ROUTE_MODAL[routeId];
+  if (!cfg) return;
+  const spots = cfg.locs.flatMap(l => SPOTS[l] || []);
+  openModal(cfg.label, spots);
+}
+
+function openLocModal(loc) {
+  const label = LOC_LABELS[loc] || loc;
+  openModal(label, SPOTS[loc] || []);
+}
+
+function closeCityModal() {
+  document.getElementById('city-modal').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('city-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('city-modal')) closeCityModal();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeCityModal();
+});
+
+// ─────────────────────────────────────────────────────────────
+// TOGGLE ITINERARY
+// ─────────────────────────────────────────────────────────────
+function toggleItinerary() {
+  const body  = document.getElementById('itin-body');
+  const arrow = document.getElementById('toggle-arrow');
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+// ─────────────────────────────────────────────────────────────
+// MAIN
+// ─────────────────────────────────────────────────────────────
+function run(gpsLoc) {
+  const today = todayStr();
+  updateProgress(today);
+  buildTable(today);
+
+  if (today < TRIP_START) {
+    const d = daysBetween(today, TRIP_START);
+    showCountdown(d);
+    return;
+  }
+
+  if (today > TRIP_END) {
+    showStatus('after', '🏡', 'Trip complete!',
+      `You wrapped up your 18-day adventure on <strong>${fmtDate(TRIP_END)}</strong>. What a trip!`);
+    return;
+  }
+
+  const idx = ITINERARY.findIndex(d => d.date === today);
+  if (idx === -1) {
+    showStatus('on-trip', '🗺️', 'On your trip!', 'No entry for today — check the full itinerary below.');
+    return;
+  }
+
+  const day = ITINERARY[idx];
+  highlightRoute(day.loc);
+
+  let statusMsg;
+  if (gpsLoc && gpsLoc !== day.loc && gpsLoc !== 'unknown') {
+    const names = { BarHarbor:'Bar Harbor', Cheticamp:'Chéticamp', Antigonish:'Antigonish', Iona:'Iona', Lunenburg:'Lunenburg', Halifax:'Halifax', Yarmouth:'Yarmouth', Portland:'Portland', NYC:'New York City' };
+    statusMsg = `GPS puts you near <strong>${names[gpsLoc]||gpsLoc}</strong> — today's plan has you in <strong>${day.city}</strong>.`;
+  } else if (gpsLoc === day.loc) {
+    statusMsg = `You're right where you should be — <strong>${day.city}</strong>. Have a great day!`;
+  } else {
+    statusMsg = `You're scheduled to be in <strong>${day.city}</strong> today.`;
+  }
+
+  showStatus('on-trip', '📍', `Day ${idx + 1} · ${day.city.split(',')[0]}`, statusMsg);
+  showDay(day, idx);
+}
+
+// ─────────────────────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  Object.keys(ROUTE_MODAL).forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('clickable');
+    el.addEventListener('click', () => openRouteModal(id));
+  });
+
+  if (!navigator.geolocation) { run(null); return; }
+
+  showStatus('loading', '📡', 'Detecting location…', 'Please allow location access for GPS tracking.');
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const { latitude: lat, longitude: lon } = pos.coords;
+      const loc = detectLoc(lat, lon);
+      const pill = document.getElementById('gps-pill');
+      const txt  = document.getElementById('gps-text');
+      pill.style.display = 'inline-flex';
+      txt.textContent = loc
+        ? `GPS: near ${loc === 'BarHarbor' ? 'Bar Harbor' : loc} (${lat.toFixed(3)}°, ${lon.toFixed(3)}°)`
+        : `GPS: ${lat.toFixed(3)}°, ${lon.toFixed(3)}° — not near a trip stop`;
+      run(loc || 'unknown');
+    },
+    () => run(null),
+    { timeout: 8000, maximumAge: 300000 }
+  );
+});
+</script>
+</body>
+</html>
